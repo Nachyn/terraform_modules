@@ -41,7 +41,7 @@ resource "aws_launch_template" "example" {
 
   user_data = base64encode(<<-EOF
               #!/bin/bash
-              echo "Hello, World!" > /var/www/html/index.html
+              echo "Hello, World!" > index.html
               nohup busybox httpd -f -p ${var.server_port} &
               EOF
   )
@@ -73,7 +73,7 @@ resource "aws_autoscaling_group" "example" {
   # target_group_arns = [aws_lb_target_group.asg.arn]
   health_check_type = "ELB"
 
-  min_size = 2
+  min_size = 1
   max_size = 10
 
   tag {
