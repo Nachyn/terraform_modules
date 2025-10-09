@@ -96,6 +96,11 @@ data "terraform_remote_state" "db" {
   }
 }
 
+output "asg_name" {
+  value       = aws_autoscaling_group.example.name
+  description = "The name of the Auto Scaling Group"
+}
+
 # resource "aws_lb" "example" {
 #   name               = "${var.cluster_name}-asg-example"
 #   load_balancer_type = "application"
