@@ -9,7 +9,10 @@ module "webserver-cluster" {
   db_remote_state_bucket = "asan-li-terraform-state"
   db_remote_state_key    = "stage/data-stores/mysql/terraform.tfstate"
 
-  instance_type      = "t3.micro"
+  ami           = "ami-0fb653ca2d3203ac1"
+  instance_type = "t3.micro"
+  server_text = "New server text"
+
   min_size           = 1
   max_size           = 5
   enable_autoscaling = false
