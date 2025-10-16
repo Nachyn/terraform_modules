@@ -9,9 +9,10 @@ module "webserver-cluster" {
   db_remote_state_bucket = "asan-li-terraform-state"
   db_remote_state_key    = "stage/data-stores/mysql/terraform.tfstate"
 
-  instance_type = "t3.micro"
-  min_size     = 1
-  max_size     = 5
+  instance_type      = "t3.micro"
+  min_size           = 1
+  max_size           = 5
+  enable_autoscaling = false
 }
 
 terraform {

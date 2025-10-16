@@ -20,15 +20,27 @@ variable "server_port" {
 }
 
 variable "instance_type" {
- description = "The type of EC2 Instances to run (e.g. t2.micro)"
- type = string
+  description = "The type of EC2 Instances to run (e.g. t2.micro)"
+  type        = string
 }
 
 variable "min_size" {
   description = "The minimum number of EC2 Instances in the ASG"
   type        = number
 }
+
 variable "max_size" {
   description = "The maximum number of EC2 Instances in the ASG"
   type        = number
+}
+
+variable "custom_tags" {
+  type        = map(string)
+  description = "Custom tags to set on the Instances in the ASG"
+  default     = {}
+}
+
+variable "enable_autoscaling" {
+  description = "If set to true, enable auto scaling"
+  type        = bool
 }

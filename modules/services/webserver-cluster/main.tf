@@ -84,6 +84,51 @@ resource "aws_autoscaling_group" "example" {
     value               = "${var.cluster_name}-ags-example"
     propagate_at_launch = true
   }
+
+  # dynamic "tag" {
+  #   for_each = var.custom_tags
+  #   content {
+  #     key                 = tag.key
+  #     value               = tag.value
+  #     propagate_at_launch = true
+  #   }
+  # }
+
+  dynamic "tag" {
+    for_each = {
+      for key, value in var.custom_tags : key => value if key != ""
+    }
+    
+    content {
+      key                 = tag.key
+      value               = tag.value
+      propagate_at_launch = true
+    }
+  }
+}
+
+resource "aws_autoscaling_schedule" "scale_out_during_business_hours" {
+  count = var.enable_autoscaling ? 1 : 0
+
+  scheduled_action_name = "scale-out-during-business-hours"
+  min_size              = 1
+  max_size              = 5
+  desired_capacity      = 2
+  recurrence            = "0 9 * * *"
+
+  autoscaling_group_name = aws_autoscaling_group.example.name
+}
+
+resource "aws_autoscaling_schedule" "scale_in_at_night" {
+  count = var.enable_autoscaling ? 1 : 0
+
+  scheduled_action_name = "scale-in-at-night"
+  min_size              = 1
+  max_size              = 5
+  desired_capacity      = 1
+  recurrence            = "0 17 * * *"
+
+  autoscaling_group_name = aws_autoscaling_group.example.name
 }
 
 data "terraform_remote_state" "db" {
