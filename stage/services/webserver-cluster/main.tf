@@ -11,7 +11,7 @@ module "webserver-cluster" {
 
   ami           = "ami-0fb653ca2d3203ac1"
   instance_type = "t3.micro"
-  server_text = "New server text"
+  server_text = "New server text || 123456"
 
   min_size           = 1
   max_size           = 5

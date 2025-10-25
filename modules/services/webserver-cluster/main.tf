@@ -67,21 +67,26 @@ data "aws_subnets" "default" {
 }
 
 resource "aws_autoscaling_group" "example" {
-  name = "#${var.cluster_name}-${aws_launch_template.example.name}"
+  name = var.cluster_name
   launch_template {
     id      = aws_launch_template.example.id
-    version = "$Latest"
+    version = aws_launch_template.example.latest_version
   }
   vpc_zone_identifier = data.aws_subnets.default.ids
 
 
   # target_group_arns = [aws_lb_target_group.asg.arn]
-  health_check_type = "ELB"
+  health_check_type = "EC2"
 
   min_size = var.min_size
   max_size = var.max_size
 
-  min_elb_capacity = var.min_size
+  instance_refresh {
+    strategy = "Rolling"
+    preferences {
+      min_healthy_percentage = 50
+    }
+  }
 
   tag {
     key                 = "Name"
@@ -102,16 +107,12 @@ resource "aws_autoscaling_group" "example" {
     for_each = {
       for key, value in var.custom_tags : key => value if key != ""
     }
-    
+
     content {
       key                 = tag.key
       value               = tag.value
       propagate_at_launch = true
     }
-  }
-
-  lifecycle {
-    create_before_destroy = true
   }
 }
 
