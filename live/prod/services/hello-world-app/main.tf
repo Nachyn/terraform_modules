@@ -23,7 +23,7 @@ provider "aws" {
 }
 
 module "hello_world_app" {
-  source = "git::https://github.com/Nachyn/terraform_modules.git//modules/services/hello-world-app?ref=v0.0.5"
+  source = "git::https://github.com/Nachyn/terraform_modules.git//modules/services/hello-world-app?ref=v0.0.6"
 
   server_text = "Hello, World from Prod!"
 
