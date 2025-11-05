@@ -11,3 +11,9 @@ variable "db_password" {
   sensitive   = true
   default     = "password"
 }
+
+variable "db_name" {
+  description = "The name to use for the database"
+  type        = string
+  default     = "db_name_1"
+}
