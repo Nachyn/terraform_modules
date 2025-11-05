@@ -26,12 +26,13 @@ module "asg" {
   max_size           = var.max_size
   enable_autoscaling = var.enable_autoscaling
 
-  subnet_ids        = data.aws_subnets.default.ids
+  subnet_ids = data.aws_subnets.default.ids
   // target_group_arns = [aws_lb_target_group.asg.arn]
   health_check_type = "EC2"
   //health_check_type = "ELB"
 
-  custom_tags = var.custom_tags
+  custom_tags   = var.custom_tags
+  key_pair_name = "kp1"
 }
 
 # module "alb" {
