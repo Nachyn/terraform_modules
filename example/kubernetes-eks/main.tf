@@ -2,10 +2,12 @@ provider "aws" {
   region = "us-east-2"
 }
 
+provider "tls" {}
+
 module "eks_cluster" {
   source = "../../modules/services/eks-cluster"
 
-  name         = "example-eks-cluster"
+  name         = "eks-cluster"
   min_size     = 1
   max_size     = 2
   desired_size = 1
@@ -25,17 +27,17 @@ data "aws_eks_cluster_auth" "cluster" {
   name = module.eks_cluster.cluster_name
 }
 
-module "simple_webapp" {
-  source = "../../modules/services/k8s-app"
+# module "simple_webapp" {
+#   source = "../../modules/services/k8s-app"
 
-  name           = "simple-webapp"
-  image          = "paulbouwer/hello-kubernetes:1.10"
-  replicas       = 2
-  container_port = 8080
+#   name           = "simple-webapp"
+#   image          = "paulbouwer/hello-kubernetes:1.10"
+#   replicas       = 2
+#   container_port = 8080
 
-  env_vars = {
-    PROVIDER = "Terraform"
-  }
+#   env_vars = {
+#     PROVIDER = "Terraform"
+#   }
 
-  depends_on = [module.eks_cluster]
-}
+#   depends_on = [module.eks_cluster]
+# }

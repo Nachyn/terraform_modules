@@ -1,4 +1,4 @@
-output "service_endpoint" {
-  value       = module.simple_webapp.service_endpoint
-  description = "The K8S Service endpoint"
-}
+# output "service_endpoint" {
+#   value       = module.simple_webapp.service_endpoint
+#   description = "The K8S Service endpoint"
+# }
