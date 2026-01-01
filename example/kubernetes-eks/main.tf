@@ -27,6 +27,30 @@ data "aws_eks_cluster_auth" "cluster" {
   name = module.eks_cluster.cluster_name
 }
 
+resource "kubernetes_storage_class" "gp3" {
+  metadata {
+    name = "gp3"
+    annotations = {
+      "storageclass.kubernetes.io/is-default-class" = "true"
+    }
+  }
+
+  storage_provisioner = "ebs.csi.aws.com"
+
+  parameters = {
+    type   = "gp3"
+    fsType = "ext4"
+  }
+
+  reclaim_policy         = "Delete"
+  volume_binding_mode    = "WaitForFirstConsumer"
+  allow_volume_expansion = true
+
+  depends_on = [
+    module.eks_cluster
+  ]
+}
+
 # module "simple_webapp" {
 #   source = "../../modules/services/k8s-app"
 
