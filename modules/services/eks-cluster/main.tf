@@ -107,6 +107,8 @@ resource "aws_eks_node_group" "nodes" {
 # ---------------------------------------------------------------------------------------------------------------------
 data "tls_certificate" "oidc" {
   url = aws_eks_cluster.cluster.identity[0].oidc[0].issuer
+
+  depends_on = [aws_eks_cluster.cluster]
 }
 
 # EKS addon
@@ -115,6 +117,13 @@ resource "aws_eks_addon" "ebs_csi_driver" {
   addon_name               = "aws-ebs-csi-driver"
   addon_version            = "v1.29.1-eksbuild.1"
   service_account_role_arn = aws_iam_role.ebs_csi_driver.arn
+
+  depends_on = [
+    aws_eks_cluster.cluster,
+    aws_eks_node_group.nodes,
+    aws_iam_role.ebs_csi_driver,
+    aws_iam_openid_connect_provider.eks
+  ]
 }
 
 # AWS Identity and Access Management (IAM) OpenID Connect (OIDC) provider
